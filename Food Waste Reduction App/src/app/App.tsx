@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   MapPin, Clock, ChevronRight, Star, Leaf, Search, Filter,
   ArrowRight, Package, TrendingDown, Users, Plus, Pencil,
@@ -826,6 +826,10 @@ function HowItWorksPage({ navigate }: { navigate: (p: Page) => void }) {
 export default function App() {
   const [page, setPage] = useState<Page>("landing");
   const [purchasedListing, setPurchasedListing] = useState<typeof listings[0] | null>(null);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0 });
+  }, [page]);
 
   const handlePurchase = (listing: typeof listings[0]) => {
     setPurchasedListing(listing);
