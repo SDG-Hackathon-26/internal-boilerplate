@@ -5,64 +5,70 @@ import {
   Trash2, CheckCircle, AlertTriangle, X, ChevronDown,
 } from "lucide-react";
 import logo from "../assets/logo.png";
+import produceBoxImage from "./components/images/image.png";
+import onigiriImage from "./components/images/onigiri.png";
+import donutsImage from "./components/images/donuts.png";
+import yakitoriImage from "./components/images/yakitori.png";
+import pastaImage from "./components/images/pasta.png";
+import menuIcon from "./components/icons/menu.png";
 
 // ─── Shared data ─────────────────────────────────────────────────────────────
 
-const categories = ["All", "Bakery", "Produce", "Deli", "Dairy", "Prepared"];
+const categories = ["All", "Bakery", "Produce", "Deli", "Donuts", "Prepared"];
 
 const listings = [
   {
-    id: 1, vendor: "Flour & Stone Bakery", vendorType: "Bakery",
-    item: "Sourdough & Pastry Bundle",
-    description: "2 sourdough loaves, 4 croissants, assorted morning pastries",
-    original: 28, discounted: 9, expires: "Today, 7 PM", stock: 3,
+    id: 1, vendor: "French", vendorType: "Bakery",
+    item: "Sourdough Bread",
+    description: "2 day old Sourdough Bread",
+    original: 800, discounted: 500, expires: "Tomorrow, 7 PM", stock: 3,
     distance: "0.4 km", rating: 4.9,
     image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&h=400&fit=crop&auto=format",
     category: "Bakery", tag: "Last few",
   },
   {
-    id: 2, vendor: "Green Lane Market", vendorType: "Supermarket",
+    id: 2, vendor: "Big Birds", vendorType: "Supermarket",
     item: "Organic Produce Box",
-    description: "Seasonal veg mix — courgettes, peppers, cherry tomatoes, spinach",
-    original: 18, discounted: 6, expires: "Today, 8 PM", stock: 7,
+    description: "Seasonal veg mix — potato, carrot, onion, cabbage",
+    original: 900, discounted: 500, expires: "Tomorrow, 8 PM", stock: 7,
     distance: "0.9 km", rating: 4.7,
-    image: "https://images.unsplash.com/photo-1543168256-418811576931?w=600&h=400&fit=crop&auto=format",
+    image: produceBoxImage,
     category: "Produce", tag: "Good deal",
   },
   {
-    id: 3, vendor: "Combini Express", vendorType: "Convenience",
-    item: "Ready Meal Selection",
-    description: "3 bento boxes, 2 onigiri sets, assorted sushi rolls",
-    original: 22, discounted: 8, expires: "Today, 9 PM", stock: 5,
+    id: 3, vendor: "Six Seven", vendorType: "Convenience",
+    item: "Onigiri Assortment",
+    description: "2 Tuna Mayos, 2 Salmon",
+    original: 800, discounted: 500, expires: "Today, 9 PM", stock: 5,
     distance: "1.2 km", rating: 4.6,
-    image: "https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=600&h=400&fit=crop&auto=format",
+    image: onigiriImage,
     category: "Prepared", tag: "Popular",
   },
   {
-    id: 4, vendor: "The Dairy Shed", vendorType: "Dairy",
-    item: "Artisan Cheese & Yoghurt",
-    description: "Mixed soft cheese selection, 2 Greek yoghurts, crème fraîche",
-    original: 16, discounted: 5, expires: "Tomorrow, 6 AM", stock: 9,
+    id: 4, vendor: "Mrs. Donuts", vendorType: "Donuts",
+    item: "Box of Donuts Assortment",
+    description: "6 random donuts in a box",
+    original: 800, discounted: 800, expires: "Tomorrow, 6 AM", stock: 9,
     distance: "1.5 km", rating: 4.8,
-    image: "https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=600&h=400&fit=crop&auto=format",
+    image: donutsImage,
     category: "Dairy", tag: null,
   },
   {
     id: 5, vendor: "Casa Napoli", vendorType: "Restaurant",
-    item: "Pasta & Antipasti Box",
-    description: "Handmade pasta portions, bruschetta, mixed antipasto platter",
-    original: 32, discounted: 11, expires: "Today, 10 PM", stock: 2,
+    item: "A Bag of Pasta",
+    description: "Handmade pasta 300g",
+    original: 800, discounted: 500, expires: "Tomorrow, 10 PM", stock: 2,
     distance: "0.7 km", rating: 4.9,
-    image: "https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=600&h=400&fit=crop&auto=format",
+    image: pastaImage,
     category: "Prepared", tag: "Selling fast",
   },
   {
     id: 6, vendor: "My Basket", vendorType: "Supermarket",
     item: "Deli Counter Closes",
-    description: "Sliced meats, hummus tubs, smoked salmon ends, olives",
-    original: 24, discounted: 7, expires: "Today, 8:30 PM", stock: 6,
+    description: " 1 Box of  Yakitori, 1 Box of Karaage",
+    original: 900, discounted: 600, expires: "Tomorrow, 00:00 AM", stock: 6,
     distance: "2.1 km", rating: 4.5,
-    image: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=600&h=400&fit=crop&auto=format",
+    image: yakitoriImage,
     category: "Deli", tag: null,
   },
 ];
@@ -121,8 +127,12 @@ function Nav({ current, navigate }: { current: Page; navigate: (p: Page) => void
             </button>
           ))}
         </nav>
-        <button className="bg-primary text-primary-foreground text-sm font-semibold px-4 py-2 rounded-lg hover:opacity-90 transition-opacity">
-          Sign in
+        <button
+          type="button"
+          aria-label="Open menu"
+          className="bg-primary text-primary-foreground text-sm font-semibold p-2 rounded-lg hover:opacity-90 transition-opacity"
+        >
+          <img src={menuIcon} alt="" className="w-5 h-5" />
         </button>
       </div>
     </header>
@@ -283,8 +293,8 @@ function ListingCard({ listing }: { listing: typeof listings[0] }) {
         </div>
         <StockBar stock={listing.stock} />
         <div className="flex items-baseline gap-2 pt-1 mt-auto">
-          <span className="text-2xl font-display font-semibold text-foreground">£{listing.discounted}</span>
-          <span className="text-sm text-muted-foreground line-through">£{listing.original}</span>
+          <span className="text-2xl font-display font-semibold text-foreground">¥{listing.discounted}</span>
+          <span className="text-sm text-muted-foreground line-through">¥{listing.original}</span>
         </div>
       </div>
     </article>
@@ -310,10 +320,12 @@ function ListingsPage({ onBack }: { onBack: () => void }) {
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <input type="text" placeholder="Search dishes, vendors…" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full pl-9 pr-4 py-2 text-sm bg-secondary border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all" />
           </div>
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
-            {categories.map((cat) => (
-              <button key={cat} onClick={() => setActiveCategory(cat)} className={`whitespace-nowrap text-sm font-medium px-4 py-2 rounded-lg transition-all ${activeCategory === cat ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"}`}>{cat}</button>
-            ))}
+          <div className="min-w-0 max-w-full overflow-x-auto pb-1 sm:pb-0">
+            <div className="flex w-max items-center gap-2">
+              {categories.map((cat) => (
+                <button key={cat} onClick={() => setActiveCategory(cat)} className={`shrink-0 whitespace-nowrap text-sm font-medium px-4 py-2 rounded-lg transition-all ${activeCategory === cat ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"}`}>{cat}</button>
+              ))}
+            </div>
           </div>
           <button className="ml-auto flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors shrink-0"><Filter size={14} />Filters</button>
         </div>
@@ -446,7 +458,7 @@ function VendorsPage({ onBack }: { onBack: () => void }) {
         {[
           { label: "Active listings", value: String(activeCount), sub: `${products.length} total` },
           { label: "Items in stock", value: String(products.reduce((a, p) => a + p.stock, 0)), sub: "across all listings" },
-          { label: "Est. revenue today", value: `£${products.reduce((a, p) => a + p.discounted * p.stock, 0)}`, sub: `£${totalSaved}+ saved for customers` },
+          { label: "Est. revenue today", value: `¥${products.reduce((a, p) => a + p.discounted * p.stock, 0)}`, sub: `¥${totalSaved}+ saved for customers` },
         ].map(({ label, value, sub }) => (
           <div key={label} className="bg-card border border-border rounded-xl p-5">
             <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{label}</p>
@@ -473,7 +485,7 @@ function VendorsPage({ onBack }: { onBack: () => void }) {
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1"><MapPin size={11} />{p.location}</span>
                   <span className="flex items-center gap-1"><Clock size={11} />Expires {p.expiryDate} at {p.expiryTime}</span>
-                  <span className="font-mono">£{p.discounted} <span className="line-through opacity-50">£{p.original}</span></span>
+                  <span className="font-mono">¥{p.discounted} <span className="line-through opacity-50">¥{p.original}</span></span>
                 </div>
               </div>
               {/* Stock stepper */}
@@ -529,11 +541,11 @@ function VendorsPage({ onBack }: { onBack: () => void }) {
                 <input type="number" min={0} value={form.stock} onChange={(e) => setForm({ ...form, stock: Number(e.target.value) })} className="w-full px-3 py-2 text-sm bg-secondary border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30" />
               </div>
               <div>
-                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-1.5">Original price (£)</label>
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-1.5">Original price (¥)</label>
                 <input type="number" min={0} value={form.original || ""} onChange={(e) => setForm({ ...form, original: Number(e.target.value) })} className="w-full px-3 py-2 text-sm bg-secondary border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30" />
               </div>
               <div>
-                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-1.5">Discounted price (£)</label>
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-1.5">Discounted price (¥)</label>
                 <input type="number" min={0} value={form.discounted || ""} onChange={(e) => setForm({ ...form, discounted: Number(e.target.value) })} className="w-full px-3 py-2 text-sm bg-secondary border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30" />
               </div>
               <div>
@@ -711,7 +723,7 @@ function HowItWorksPage({ navigate }: { navigate: (p: Page) => void }) {
           <h2 className="font-display text-2xl font-semibold mb-8">Common questions</h2>
           <div className="grid md:grid-cols-2 gap-x-12 gap-y-7">
             {(activeTab === "customers" ? [
-              { q: "Do I need an account?", a: "No account needed to browse. You only need to sign in to save favourites or get notifications when your preferred vendors list something new." },
+              { q: "Do I need an account?", a: "No account needed to browse. You only need to Profile to save favourites or get notifications when your preferred vendors list something new." },
               { q: "Is the food safe to eat?", a: "Yes. Listings are for food that's close to its best-before or end-of-service date — not spoiled. Vendors are responsible for food safety compliance." },
               { q: "Can I reserve items?", a: "Listings are first-come, first-served. Stock counts update live so you can see what's left before you head over." },
               { q: "What if I arrive and it's gone?", a: "If stock runs out before you arrive, the listing will show as sold out. We recommend checking shortly before you leave." },
