@@ -85,7 +85,7 @@ const nearbyStats = [
   { icon: Clock, label: "Closest pickup", value: "0.4 km" },
 ];
 
-type Page = "landing" | "listings" | "vendors" | "how-it-works";
+type Page = "landing" | "listings" | "vendors" | "how-it-works" | "purchase-success";
 
 // ─── Shared sub-components ────────────────────────────────────────────────────
 
@@ -267,7 +267,7 @@ function LandingPage({ navigate }: { navigate: (p: Page) => void }) {
 
 // ─── Listings page ────────────────────────────────────────────────────────────
 
-function ListingCard({ listing }: { listing: typeof listings[0] }) {
+function ListingCard({ listing, onPurchase }: { listing: typeof listings[0]; onPurchase: (listing: typeof listings[0]) => void }) {
   const saving = Math.round(((listing.original - listing.discounted) / listing.original) * 100);
   return (
     <article className="bg-card rounded-xl overflow-hidden border border-border group hover:shadow-lg transition-shadow duration-300 flex flex-col">
@@ -296,12 +296,19 @@ function ListingCard({ listing }: { listing: typeof listings[0] }) {
           <span className="text-2xl font-display font-semibold text-foreground">¥{listing.discounted}</span>
           <span className="text-sm text-muted-foreground line-through">¥{listing.original}</span>
         </div>
+        <button
+          type="button"
+          onClick={() => onPurchase(listing)}
+          className="w-full bg-primary text-primary-foreground text-sm font-semibold px-4 py-2.5 rounded-lg hover:opacity-90 transition-opacity"
+        >
+          Purchase
+        </button>
       </div>
     </article>
   );
 }
 
-function ListingsPage({ onBack }: { onBack: () => void }) {
+function ListingsPage({ onBack, onPurchase }: { onBack: () => void; onPurchase: (listing: typeof listings[0]) => void }) {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const filtered = listings
@@ -340,7 +347,7 @@ function ListingsPage({ onBack }: { onBack: () => void }) {
         </div>
         {filtered.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filtered.map((l) => <ListingCard key={l.id} listing={l} />)}
+            {filtered.map((l) => <ListingCard key={l.id} listing={l} onPurchase={onPurchase} />)}
           </div>
         ) : (
           <div className="text-center py-20 text-muted-foreground">
@@ -350,6 +357,57 @@ function ListingsPage({ onBack }: { onBack: () => void }) {
         )}
       </main>
     </>
+  );
+}
+
+// ─── Purchase success page ────────────────────────────────────────────────────
+
+function DummyBarcode() {
+  const bars = [3, 1, 2, 1, 4, 2, 1, 3, 1, 1, 4, 2, 2, 1, 3, 1, 2, 4, 1, 2, 1, 3, 2, 1, 4, 1, 2, 1];
+
+  return (
+    <div className="bg-card border border-border rounded-xl px-6 py-5 w-full max-w-sm">
+      <div className="h-28 flex items-stretch justify-center gap-1">
+        {bars.map((width, index) => (
+          <div key={index} className="bg-foreground rounded-sm" style={{ width: `${width * 3}px` }} />
+        ))}
+      </div>
+      <p className="font-mono text-center text-sm tracking-[0.3em] mt-4 text-muted-foreground">4927 0184 6639</p>
+    </div>
+  );
+}
+
+function PurchaseSuccessPage({ listing, navigate }: { listing: typeof listings[0] | null; navigate: (p: Page) => void }) {
+  return (
+    <main className="max-w-3xl mx-auto px-6 py-16 md:py-24">
+      <div className="text-center flex flex-col items-center">
+        <div className="w-24 h-24 rounded-full bg-primary text-primary-foreground flex items-center justify-center mb-6">
+          <CheckCircle size={56} />
+        </div>
+        <p className="text-xs uppercase tracking-widest text-muted-foreground font-mono mb-2">Order confirmed</p>
+        <h1 className="font-display text-4xl md:text-5xl font-semibold mb-3">Purchase successful</h1>
+        <p className="text-muted-foreground max-w-lg mb-8">
+          Show this barcode at pickup to redeem{listing ? ` your ${listing.item} from ${listing.vendor}` : " your purchased item"}.
+        </p>
+        <DummyBarcode />
+        <div className="mt-8 flex flex-col sm:flex-row gap-3">
+          <button
+            type="button"
+            onClick={() => navigate("listings")}
+            className="bg-primary text-primary-foreground font-semibold px-6 py-3 rounded-lg hover:opacity-90 transition-opacity"
+          >
+            Back to listings
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate("landing")}
+            className="bg-secondary text-foreground font-semibold px-6 py-3 rounded-lg hover:opacity-80 transition-opacity"
+          >
+            Home
+          </button>
+        </div>
+      </div>
+    </main>
   );
 }
 
@@ -767,12 +825,19 @@ function HowItWorksPage({ navigate }: { navigate: (p: Page) => void }) {
 
 export default function App() {
   const [page, setPage] = useState<Page>("landing");
+  const [purchasedListing, setPurchasedListing] = useState<typeof listings[0] | null>(null);
+
+  const handlePurchase = (listing: typeof listings[0]) => {
+    setPurchasedListing(listing);
+    setPage("purchase-success");
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans">
       <Nav current={page} navigate={setPage} />
       {page === "landing" && <LandingPage navigate={setPage} />}
-      {page === "listings" && <ListingsPage onBack={() => setPage("landing")} />}
+      {page === "listings" && <ListingsPage onBack={() => setPage("landing")} onPurchase={handlePurchase} />}
+      {page === "purchase-success" && <PurchaseSuccessPage listing={purchasedListing} navigate={setPage} />}
       {page === "vendors" && <VendorsPage onBack={() => setPage("landing")} />}
       {page === "how-it-works" && <HowItWorksPage navigate={setPage} />}
       <Footer />
