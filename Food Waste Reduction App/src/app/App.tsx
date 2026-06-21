@@ -4,6 +4,7 @@ import {
   ArrowRight, Package, TrendingDown, Users, Plus, Pencil,
   Trash2, CheckCircle, AlertTriangle, X, ChevronDown,
 } from "lucide-react";
+import logo from "../assets/logo.png";
 
 // ─── Shared data ─────────────────────────────────────────────────────────────
 
@@ -100,8 +101,12 @@ function Nav({ current, navigate }: { current: Page; navigate: (p: Page) => void
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <button onClick={() => navigate("landing")} className="flex items-center gap-2.5">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <Leaf size={16} className="text-primary-foreground" />
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center">
+              <img
+                src={logo}
+                alt="SecondServe logo"
+                className="w-8 h-8"
+              />
           </div>
           <span className="font-display font-semibold text-lg tracking-tight">SecondServe</span>
         </button>
